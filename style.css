@@ -1,4 +1,6 @@
 * {
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
@@ -23,4 +25,62 @@ h1 {
     position: absolute;
     top: 0;
     width: 100%;
+}
+
+header {
+    background: #fff;
+    float: left;
+    min-height: 30px;
+    padding: 15px 15px 15px 45px;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: 1;
+}
+
+header:after {
+    content: "";
+    clear: both;
+}
+
+.axes {
+    background: #fff;
+    color: purple;
+    float: left;
+    padding: 10px;
+}
+
+button {
+    border: 0;
+    border-radius: 10px;
+    color: #fff;
+    cursor: pointer;
+    float: right;
+    font-size: 150%;
+    padding: 5px 15px;
+    min-width: 100px;
+}
+
+button.start {
+    background: green;
+}
+
+button.stop {
+    background: red;
+}
+
+.notify {
+    background: yellow;
+    border-radius: 30px;
+    position: absolute;
+    top: 20px;
+    left: 13px;
+    height: 30px;
+    transition: 2s all ease;
+    width: 30px;
+}
+
+.notified {
+    background: green;
+    box-shadow: 0 0 30px yellow;
 }

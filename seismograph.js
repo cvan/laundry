@@ -1,5 +1,63 @@
 (function() {
 
+    var lastVibration = undefined;
+    var vibrations = 0;
+    var vibrating = undefined;
+    var listening = false;
+    var notify = false;
+    var notified = false;
+
+    function notify() {
+        if (notified) {
+            return;
+        }
+        notified = true;
+        document.querySelector('.notify').classList.add('notified');
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', 'http://4i9r.localtunnel.com/notify', true);
+        xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+        xhr.onreadystatechange = function (e) {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    console.log(xhr.responseText);
+                } else {
+                    console.error(xhr.statusText);
+                }
+            }
+        };
+        xhr.onerror = function (e) {
+            console.error(xhr.statusText);
+        };
+        xhr.send('phone=2489826323');
+    }
+    window.notify = notify;
+
+    function cancelNotify() {
+        notified = false;
+        document.querySelector('.notified').classList.remove('notified');
+    }
+
+    var button = document.querySelector('.start');
+    button.addEventListener('click', function() {
+        if (button.classList.contains('start')) {
+            listening = true;
+
+            button.classList.remove('start');
+            button.classList.add('stop');
+            button.innerHTML = 'Stop';
+        } else {
+            lastVibration = undefined;
+            vibrations = 0;
+            vibrating = undefined;
+            listening = false;
+
+            button.classList.remove('stop');
+            button.classList.add('start');
+            button.innerHTML = 'Start';
+            cancelNotify();
+        }
+    });
+
     var levelsRef = new Firebase('https://laundry.firebaseio.com/levels');
 
     var anchor = document.querySelector('#script');
@@ -70,7 +128,22 @@
     }
 
     function tilt(axes) {
-        levelsRef.push({axes: axes});
+        levelsRef.push(axes);
+        document.querySelector('.axes').innerHTML = (axes[0] || 0).toFixed(1) + ',' + (axes[1] || 0).toFixed(1) + ',' + deflection.toFixed(1) + '|' + vibrations;
+
+        if (listening && axes[0] < -3) {
+            vibrations++;
+            lastVibration = new Date();
+            vibrating = true;
+        }
+
+        document.querySelector('.axes').innerHTML += vibrations;
+
+        if (listening && new Date() - lastVibration > 3000) {
+            vibrating = false;
+            notify();
+        }
+
         if (axesPrev) {
             for (var i = 0; i < axes.length; i++) {
                 var delta = axes[i] - axesPrev[i];
