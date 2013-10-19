@@ -1,0 +1,26 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    background: #333;
+    height: 100%;
+}
+
+body {
+    color: #eee;
+    font: 100% 'Lucida Grande', 'Lucida Sans Unicode', sans-serif;
+}
+
+h1 {
+    display: none;
+}
+
+#seismograph {
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+}
