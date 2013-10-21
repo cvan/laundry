@@ -9,34 +9,29 @@
             });
             var sensor = document.querySelector('#sensor');
             var count = 0;
-            var lastDir = 0;
+            var degreesChanged = 0;
+            var lastDegreesChanged = 0;
             var vibrations = 0;
-            var listening = true;
+            var vibrating = false;
 
-            // setInterval(function() {
+            setInterval(function() {
+                console.log('...');
+                if (Math.abs(degreesChanged - lastDegreesChanged) > 3) {
+                    vibrating = !vibrating;
+                }
+                console.log('vibrating', vibrating);
 
-            // }, 3000);
+                lastDegreesChanged = degreesChanged;
+            }, 3000);
 
             function deviceOrientationHandler(tiltLR, tiltFB, dir) {
-                if (!listening) {
-                     return;
-                }
                 // console.log('gamma', tiltLR);
                 // console.log('beta', tiltFB);
                 console.log('alpha', dir);
                 console.log('alpha difference', Math.abs(dir - lastDir));
-                if (Math.abs(dir - lastDir) > 1) {
-                    console.log('vibrating');
-                    vibrations++;
-                    lastVibration = new Date();
-                }
-                if (vibrations > 10 && lastVibration && new Date() - lastVibration > 2000) {
-                    listening = false;
-                    console.log('not vibrating');
-                }
-                // if (Math.abs(dir - lastDir)) > 1.0) {
-                //     console.log('shaking');
-                // }
+
+                degreesChanged = Math.abs(dir - lastDir);
+
                 lastDir = dir;
             }
 
