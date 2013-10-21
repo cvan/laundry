@@ -8,30 +8,31 @@
                 window.location.reload();
             });
             var sensor = document.querySelector('#sensor');
-            var count = 0;
+
             var degreesChanged = 0;
-            var lastDegreesChanged = 0;
-            var vibrations = 0;
             var vibrating = false;
+            var lastDir = null;
 
             setInterval(function() {
-                console.log('...');
-                if (Math.abs(degreesChanged - lastDegreesChanged) > 3) {
-                    vibrating = !vibrating;
+                console.log('degreesChanged', degreesChanged);
+                if (degreesChanged > 5) { // TODO
+                    vibrating = true;
+                } else {
+                    vibrating = false;
                 }
                 console.log('vibrating', vibrating);
-
-                lastDegreesChanged = degreesChanged;
-            }, 3000);
+                degreesChanged = 0;
+            }, 1000);
 
             function deviceOrientationHandler(tiltLR, tiltFB, dir) {
                 // console.log('gamma', tiltLR);
                 // console.log('beta', tiltFB);
+                dir = tiltLR;
                 console.log('alpha', dir);
                 console.log('alpha difference', Math.abs(dir - lastDir));
-
-                degreesChanged = Math.abs(dir - lastDir);
-
+                if (lastDir !== null) {
+                    degreesChanged += Math.abs(dir - lastDir);
+                }
                 lastDir = dir;
             }
 
