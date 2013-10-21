@@ -1,0 +1,11 @@
+{
+    "description": "Laundry",
+    "launch_path": "/~cwiemeersch/laundry/acc.html",
+    "name": "Laundry",
+    "orientation": [
+        "portrait-primary"
+    ],
+    "icons": {
+
+    }
+}

@@ -128,7 +128,9 @@
     }
 
     function tilt(axes) {
-        levelsRef.push(axes);
+        if (listening) {
+            levelsRef.push(axes);
+        }
         document.querySelector('.axes').innerHTML = (axes[0] || 0).toFixed(1) + ',' + (axes[1] || 0).toFixed(1) + ',' + deflection.toFixed(1) + '|' + vibrations;
 
         if (listening && axes[0] < -3) {
